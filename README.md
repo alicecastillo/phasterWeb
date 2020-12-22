@@ -6,6 +6,7 @@ Open up the “Terminal” application, and copy and paste these commands. Do so
 You will see output text and lots of progress bars in the terminal window; that’s good, it means installation is working!
 
 - Run the following commands:
+    - ###### /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     - ###### brew install curl
     - ###### url https://bootstrap.pypa.io/get-pip.py -o get-pip.py
     - ###### python get-pip.py
