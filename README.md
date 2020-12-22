@@ -22,7 +22,7 @@ If you’re having trouble, see: https://pip.pypa.io/en/stable/installing/
 - Next, you need to create your bash file.
 - Type these commands into the terminal.
     - ###### cd
-    - ###### vi .bash
+    - ###### vi .bash_profile
 
 - A new file will be created. To write in this file, type “i” and then paste these lines:
     - ###### # NCBI API Key for Entrez
