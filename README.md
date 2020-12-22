@@ -29,6 +29,8 @@ If you’re having trouble, see: https://pip.pypa.io/en/stable/installing/
 - A new file will be created. To write in this file, type “i” and then paste these lines:
     - ###### # NCBI API Key for Entrez
     - ###### export NCBI_API_KEY=55deb1c26fd81aabd72919fb88bef7141509
+- Once you have pasted those lines, hit the "ESC" key (top left).
+- Then type ":wq", then hit enter. This means "save and quit".
 
 Now when you run the program, you will be using the API key provided to the Bradley lab! This lets the NCBI database know that you are a registered user, and increases the amount of calls (requests for data) you are allowed to make.
 
