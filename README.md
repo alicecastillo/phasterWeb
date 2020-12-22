@@ -5,6 +5,8 @@
 Open up the “Terminal” application, and copy and paste these commands. Do so line by line, hitting enter after every line ends.
 You will see output text and lots of progress bars in the terminal window; that’s good, it means installation is working!
 
+**Whenever it asks for your password, your typing will be hidden. This is for security's sake. You are, in fact, typing.**
+
 - Run the following commands:
     - ###### /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     - ###### brew install curl
