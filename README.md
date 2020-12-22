@@ -5,7 +5,7 @@
 Open up the “Terminal” application, and copy and paste these commands. Do so line by line, hitting enter after every line ends.
 You will see output text and lots of progress bars in the terminal window; that’s good, it means installation is working!
 
-Follow these instructions:
+Run the following commands:
 ###### brew install curl
 ###### url https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 ###### python get-pip.py
@@ -29,7 +29,6 @@ A new file will be created. To write in this file, type “i” and then paste t
 ###### export NCBI_API_KEY=55deb1c26fd81aabd72919fb88bef7141509
 
 Now when you run the program, you will be using the API key provided to the Bradley lab! This lets the NCBI database know that you are a registered user, and increases the amount of calls (requests for data) you are allowed to make.
-
 
 
 **New to Terminal’s Command Line Interface (CLI)? No problem!**
