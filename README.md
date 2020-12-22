@@ -32,7 +32,7 @@ Now when you run the program, you will be using the API key provided to the Brad
 
 
 
-New to Terminal’s Command Line Interface (CLI)? No problem!
+**New to Terminal’s Command Line Interface (CLI)? No problem!**
 
 - Open “Finder” and navigate to your downloaded phaster-project folder.  If you just began this process, it will most likely be in your Downloads , Desktop, or user folder (whatever your Mac username is, with a house icon next to it). 
 - Click on the phasterWeb folder. There should be another phasterWeb folder inside of it; right-click on THIS phasterWeb folder, and select the option “New Terminal Tab at Folder”
