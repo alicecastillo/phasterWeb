@@ -1,0 +1,10 @@
+<div class="container">
+    <p></p>
+    <form method=POST action="">
+        {% csrf_token %}
+        <table border="1" style="width: 100%">
+            {{ form }}
+        </table>
+        <input type="submit" value="Search" name="StartSearch">
+    </form>
+</div>

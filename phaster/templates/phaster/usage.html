@@ -1,0 +1,20 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'phaster/homepage.css' %}">
+
+{% block content %}
+<div id="header">
+    <div id="branding">
+        <h1 id="site-name">
+            <a href="{% url 'phaster:siteusage' %}">How to Use This Site</a>
+        </h1>
+    </div>
+</div>
+<div id="subheader">
+    <h4 id="subheader h4">
+            <a href="{% url 'phaster:homepage' %}" style="margin-left:30px">&lt; Back To Home</a>
+    </h4>
+</div>
+
+
+{% endblock content %}
