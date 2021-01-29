@@ -185,6 +185,10 @@ def runFullPhaster(keyword, accession_only):
                         df_dict["MCP Occurrences"] = None
                     df_dict["GC %"] = summary["GC_PERCENTAGE"]
                     df_dict["Details"] = "None"
+                    atcc= "https://www.atcc.org/search#q={}sort=relevancy".format(query.strip().replace(" ", "%20"))
+                    df_dict["ATCC Link"] = '=HYPERLINK("{}", "ATCC")'.format(atcc)
+                    dmsz = "https://www.dsmz.de/search?tx_kesearch_pi1%5Bsword%5D={}".format(query.strip().replace(" ", "%20"))
+                    df_dict["DMSZ Link"] = '=HYPERLINK("{}", "DMSZ")'.format(dmsz)
                     df_list.append(df_dict)
             else:
                 print("ERROR for {}".format(key))
@@ -202,6 +206,17 @@ def runFullPhaster(keyword, accession_only):
         excel_path = "{}/Desktop/phaster_run_{}.xlsx".format(user_profile, query_excel)
         writer = pd.ExcelWriter(path="/Users/alicecastillo/Desktop/phaster_run_{}.xlsx".format(query_excel), engine='xlsxwriter')
         final_df.to_excel(writer, sheet_name = "Successful Accession Runs", index=False)
+
+        # add styling for the links
+        workbook = writer.book
+        # Get Sheet1
+        worksheet = writer.sheets['Successful Accession Runs']
+
+        cell_format = workbook.add_format()
+        cell_format.set_underline()
+        cell_format.set_font_color('blue')
+
+        worksheet.set_column('O:P', None, cell_format)
         if error_list:
             error_df = pd.DataFrame(error_list)
             error_df.to_excel(writer, sheet_name="Errors", index=False)
