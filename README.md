@@ -26,8 +26,7 @@ If you’re having trouble, see: https://pip.pypa.io/en/stable/installing/
     - ###### cd
     - ###### vi .bash_profile
 
-- A new file will be created. To write in this file, type “i” and then paste these lines. THIS IS NOT HE ACTUAL API KEY. EMAIL ALICE (alicecastillo@wustl.edu) OR ALEX FOR THE API KEY, AND REPLACE THIS FAKE API KEY WITH THE ONE PROVIDED TO YOU:
-    - ###### # NCBI API Key for Entrez
+- A new file will be created. To write in this file, type “i” and then paste these lines. ! NOTE ! THIS IS NOT THE ACTUAL API KEY. EMAIL ALICE (alicecastillo@wustl.edu) OR ALEX FOR THE API KEY, AND REPLACE THIS FAKE API KEY WITH THE ONE PROVIDED TO YOU:
     - ###### export NCBI_API_KEY=12345678910abcdefg123
 - Once you have pasted those lines, hit the "ESC" key (top left).
 - Then type ":wq", then hit enter. This means "save and quit".
