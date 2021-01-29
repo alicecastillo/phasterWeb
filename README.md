@@ -2,6 +2,8 @@
 
 **ReadMe- Phaster**
 
+**New to Terminal’s Command Line Interface (CLI)? No problem!**
+
 Open up the “Terminal” application, and copy and paste these commands. Do so line by line, hitting enter after every line ends.
 You will see output text and lots of progress bars in the terminal window; that’s good, it means installation is working!
 
@@ -26,22 +28,20 @@ If you’re having trouble, see: https://pip.pypa.io/en/stable/installing/
     - ###### cd
     - ###### vi .bash_profile
 
-- A new file will be created. To write in this file, type “i” and then paste these lines:
-    - ###### # NCBI API Key for Entrez
-    - ###### export NCBI_API_KEY=55deb1c26fd81aabd72919fb88bef7141509
+- A new file will be created. To write in this file, type “i” and then paste this line. ! NOTE ! THIS IS NOT THE ACTUAL API KEY. EMAIL ALICE OR ALEX FOR THE API KEY, AND REPLACE THIS FAKE API KEY WITH THE ONE PROVIDED TO YOU:
+    - ###### export NCBI_API_KEY=12345678910abcdefg123
 - Once you have pasted those lines, hit the "ESC" key (top left).
 - Then type ":wq", then hit enter. This means "save and quit".
 
 Now when you run the program, you will be using the API key provided to the Bradley lab! This lets the NCBI database know that you are a registered user, and increases the amount of calls (requests for data) you are allowed to make.
 
-
-**New to Terminal’s Command Line Interface (CLI)? No problem!**
+Next, you will begin to run the project :)
 
 - Open “Finder” and navigate to your downloaded phaster-project folder.  If you just began this process, it will most likely be in your Downloads , Desktop, or user folder (whatever your Mac username is, with a house icon next to it). 
-- Click on the phasterWeb folder. There should be another phasterWeb folder inside of it; right-click on THIS phasterWeb folder, and select the option “New Terminal Tab at Folder”
+- Right-click on the phasterWeb folder, and select the option “New Terminal Tab at Folder”
 - This will take you to a terminal window. Once you are there, type this command:
     - ###### ls -l
-    - If you see several different files and folders, including “requirements.txt” and “manage.py” you are in the correct folder!
+    - If you see several different files and folders, including “requirements.txt” and “manage.py” you are in the correct folder! Next, type:
     - ###### Pip install -r requirements.txt
     Once installation is finished, run this command to start your local app:
     - ###### python manage.py runserver
