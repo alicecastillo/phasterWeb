@@ -41,7 +41,7 @@ Next, you will begin to run the project :)
 - Right-click on the phasterWeb folder, and select the option “New Terminal Tab at Folder”
 - This will take you to a terminal window. Once you are there, type this command:
     - ###### ls -l
-    - If you see several different files and folders, including “requirements.txt” and “manage.py” you are in the correct folder!
+    - If you see several different files and folders, including “requirements.txt” and “manage.py” you are in the correct folder! Next, type:
     - ###### Pip install -r requirements.txt
     Once installation is finished, run this command to start your local app:
     - ###### python manage.py runserver
