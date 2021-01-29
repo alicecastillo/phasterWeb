@@ -45,7 +45,8 @@ Next, you will begin to run the project :)
     - ###### Pip install -r requirements.txt
     Once installation is finished, run this command to start your local app:
     - ###### python manage.py runserver
-- If your app builds successfully, you will see a notice directing you to http://127.0.0.1:8000/
+- If your app builds successfully, you will see a notice directing you to http://127.0.0.1:8000/ 
+- DO NOT EXIT OUT OF THE TERMINAL WINDOW UNTIL AFTER YOU POWER DOWN THE WEBSITE; OTHERWISE, IT WILL SHUT DOWN WHEN THE TERMINAL WINDOW IS CLOSED.
     - Open your go-to browser and navigate to this address. 
-- When you are done using phaster, hit “CTRL+C” to power down the web app
+- When you are done using phaster, go back to the terminal window, click on the window, and hit “CTRL+C” to power down the web app
 - Enjoy phaster!
