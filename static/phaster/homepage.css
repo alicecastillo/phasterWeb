@@ -1,0 +1,91 @@
+/* styling adopted from django admin site to maintain themes/colors */
+#header {
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 40px;
+    background: #990000;
+    color: whitesmoke;
+    overflow: hidden;
+}
+
+#branding h1, #branding h1 a:link, #branding h1 a:visited {
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+#header a:link, #header a:visited {
+    color: #fff;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    font-family: "Roboto","Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+    color: #333;
+    background: #fff;
+}
+
+/* end of django admin styling*/
+
+#subheader {
+    width: auto;
+    height: 50px;
+    display: flex;
+    align-items: left;
+    background: indianred;
+    color: rgb(58, 109, 102);
+}
+
+#subheader a:link, #subheader a:visited {
+    color: lightgray;
+    text-decoration: none;
+    padding: 5px 10px 5px 10px;
+}
+
+#homepage-content {
+    display: flex;
+    background: #e7e6e6; 
+    height:fill;
+    align-content: center;
+    
+}
+
+#homepage-content h1 {
+    font-size: 16px;
+    text-align: justify;
+    padding: 5px 10px 10px 10px;
+}
+
+#search-box {
+    align-self: center;
+    align-content: center;
+    /* margin: 5% 10% 20% 5%; */
+    padding: 10% 35% 10% 25%;
+    width: 100%;
+    height: 20%;
+    background: #ffffff;
+}
+
+#search-box table {
+    display: table;
+    border-collapse: separate;
+    /* box-sizing: border-box; */
+    border-spacing: 2px;
+    border-color: grey;
+    width: 150%;
+}
+
+#warning-alert {
+    align-self: center;
+    align-content: center;
+    margin: 25% 10% 20% 5%;
+    padding: 10% 35% 10% 25%;
+    width: 100%;
+    height: 10%;
+    background: indianred;
+    color: whitesmoke;
+}

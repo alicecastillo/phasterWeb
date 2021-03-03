@@ -6,6 +6,7 @@ from django.contrib import messages
 
 # packages needed to run phaster
 import os, subprocess, json, re
+from datetime import datetime
 from collections import defaultdict
 from urllib.request import urlopen
 import pandas as pd
@@ -122,113 +123,124 @@ def save_post_data(request, post):
 
 
 def runFullPhaster(keyword, accession_only):
+    multipleAccessions = []
+    multipleErrorLists = []
     badAccessions = []
-    valid_entrez, query, bad_input = retrieve(keyword)
+    print(keyword.split(","))
+    for k in keyword.split(","):
+        k = k.strip()
+        print(k)
 
-    if bad_input:
-        return "", "", bad_input
+        valid_entrez, query, bad_input = retrieve(k)
 
-    if valid_entrez:
-        f = open(valid_entrez, "r")
-        query_res = f.read()
-        access_blocks = query_res.split("\n")
-        access_blocks = [f for f in access_blocks if f]
+        if bad_input:
+            return "", "", bad_input
 
-        access_dict = defaultdict(list)
-        for ab in access_blocks:
-            if "NZ_" not in ab and len(ab) > 1:
-                # accession, genome, title
-                ab_items = ab.split("\t")
-                ab_values = ab_items[1:len(ab_items)]
-                ab_key = ab_items[0]
+        if valid_entrez:
+            f = open(valid_entrez, "r")
+            query_res = f.read()
+            access_blocks = query_res.split("\n")
+            access_blocks = [f for f in access_blocks if f]
 
-                # retrieve primary accession via scrape
-                try:
-                    test_url = "https://www.ncbi.nlm.nih.gov/assembly/?term={}".format(ab_key.strip())
-                    search_html = runScrape(test_url)
-                    prim_accession = re.search(r'RefSeq assembly accession:(.*)RefSeq assembly', search_html, re.MULTILINE)
-                    prim_accession = prim_accession.group(0).split("<dd>")[1].split("<")
-                    prim_accession = prim_accession[0].split(" ")[0]
-                    ab_values.append(prim_accession)
-                    access_dict[ab_key] = ab_values
-                except Exception as e:
-                    print("{} ERROR: {}".format(ab_key, e))
-                    ab_values.append("[NOT FOUND]")
-                    access_dict[ab_key] = ab_values
+            access_dict = defaultdict(list)
+            for ab in access_blocks:
+                if "NZ_" not in ab and len(ab) > 1:
+                    # accession, genome, title
+                    ab_items = ab.split("\t")
+                    ab_values = ab_items[1:len(ab_items)]
+                    ab_key = ab_items[0]
+
+                    # retrieve primary accession via scrape
+                    try:
+                        test_url = "https://www.ncbi.nlm.nih.gov/assembly/?term={}".format(ab_key.strip())
+                        search_html = runScrape(test_url)
+                        prim_accession = re.search(r'RefSeq assembly accession:(.*)RefSeq assembly', search_html, re.MULTILINE)
+                        prim_accession = prim_accession.group(0).split("<dd>")[1].split("<")
+                        prim_accession = prim_accession[0].split(" ")[0]
+                        ab_values.append(prim_accession)
+                        access_dict[ab_key] = ab_values
+                    except Exception as e:
+                        print("{} ERROR: {}".format(ab_key, e))
+                        ab_values.append("[NOT FOUND]")
+                        access_dict[ab_key] = ab_values
 
 
-        df_list = []
-        error_list = []
-        for key, value in access_dict.items():
-            summary_list = runPhaster(key, badAccessions)
-            if summary_list:
-                for summary in summary_list:
-                    df_dict = {}
-                    df_dict["ID"] = value[2]
-                    df_dict["Name"] = value[1].split(",")[1].strip()
-                    df_dict["Type"] = value[0]
-                    df_dict["Accession"] = key
-                    df_dict["Region"] = summary["REGION"]
-                    df_dict["Region Length"] = summary["REGION_LENGTH"]
-                    comp_score = summary["COMPLETENESS(score)"].split("(")
-                    df_dict["Completeness"] = comp_score[0]
-                    df_dict["Completeness Score"] = comp_score[1].replace(")", "")
-                    df_dict["# Total Proteins"] = summary["TOTAL_PROTEIN_NUM"]
-                    df_dict["Region Position"] = summary["REGION_POSITION"]
-                    mcp = summary["MOST_COMMON_PHAGE_NAME(hit_genes_count)"].split(',')[0]
-                    if "(" in mcp:
-                        mcp_list = mcp.split("(")
-                        df_dict["Most Common Phage (MCP)"] = mcp_list[0]
-                        df_dict["MCP Occurrences"] = mcp_list[1].replace(")", "")
-                    else:
-                        df_dict["Most Common Phage (MCP)"] = mcp
-                        df_dict["MCP Occurrences"] = None
-                    df_dict["GC %"] = summary["GC_PERCENTAGE"]
-                    df_dict["Details"] = "None"
-                    atcc= "https://www.atcc.org/search#q={}sort=relevancy".format(query.strip().replace(" ", "%20"))
-                    df_dict["ATCC Link"] = '=HYPERLINK("{}", "ATCC")'.format(atcc)
-                    dmsz = "https://www.dsmz.de/search?tx_kesearch_pi1%5Bsword%5D={}".format(query.strip().replace(" ", "%20"))
-                    df_dict["DMSZ Link"] = '=HYPERLINK("{}", "DMSZ")'.format(dmsz)
-                    df_list.append(df_dict)
-            else:
-                print("ERROR for {}".format(key))
-                error_dict = {}
-                error_dict["ID"] = value[2]
-                error_dict["Accession"] = key
-                error_dict["Error"] = "Phaster API backlogged"
-                error_list.append(error_dict)
+            df_list = []
+            error_list = []
+            for key, value in access_dict.items():
+                summary_list = runPhaster(key, badAccessions)
+                if summary_list:
+                    for summary in summary_list:
+                        df_dict = {}
+                        df_dict["Query"] = k
+                        df_dict["ID"] = value[2]
+                        df_dict["Name"] = value[1].split(",")[1].strip()
+                        df_dict["Type"] = value[0]
+                        df_dict["Accession"] = key
+                        df_dict["Region"] = summary["REGION"]
+                        df_dict["Region Length"] = summary["REGION_LENGTH"]
+                        comp_score = summary["COMPLETENESS(score)"].split("(")
+                        df_dict["Completeness"] = comp_score[0]
+                        df_dict["Completeness Score"] = comp_score[1].replace(")", "")
+                        df_dict["# Total Proteins"] = summary["TOTAL_PROTEIN_NUM"]
+                        df_dict["Region Position"] = summary["REGION_POSITION"]
+                        mcp = summary["MOST_COMMON_PHAGE_NAME(hit_genes_count)"].split(',')[0]
+                        if "(" in mcp:
+                            mcp_list = mcp.split("(")
+                            df_dict["Most Common Phage (MCP)"] = mcp_list[0]
+                            df_dict["MCP Occurrences"] = mcp_list[1].replace(")", "")
+                        else:
+                            df_dict["Most Common Phage (MCP)"] = mcp
+                            df_dict["MCP Occurrences"] = None
+                        df_dict["GC %"] = summary["GC_PERCENTAGE"]
+                        df_dict["Details"] = "None"
+                        atcc= "https://www.atcc.org/search#q={}sort=relevancy".format(query.strip().replace(" ", "%20"))
+                        df_dict["ATCC Link"] = '=HYPERLINK("{}", "ATCC")'.format(atcc)
+                        dmsz = "https://www.dsmz.de/search?tx_kesearch_pi1%5Bsword%5D={}".format(query.strip().replace(" ", "%20"))
+                        df_dict["DMSZ Link"] = '=HYPERLINK("{}", "DMSZ")'.format(dmsz)
+                        df_list.append(df_dict)
+                else:
+                    print("ERROR for {}".format(key))
+                    error_dict = {}
+                    error_dict["Query"] = k
+                    error_dict["ID"] = value[2]
+                    error_dict["Accession"] = key
+                    error_dict["Error"] = "Phaster API backlogged"
+                    error_list.append(error_dict)
+            multipleAccessions.extend(df_list)
+            multipleErrorLists.extend(error_list)
 
-        # send output (and errors, if any) to file
-        final_df = pd.DataFrame(df_list)
-        query_excel = query.replace(" ", "_").replace("-", "")
-        print("/Users/alicecastillo/Desktop/phaster_run_{}.xlsx".format(query_excel))
-        user_profile = os.environ.get('USERPROFILE')
-        excel_path = "{}/Desktop/phaster_run_{}.xlsx".format(user_profile, query_excel)
-        writer = pd.ExcelWriter(path="/Users/alicecastillo/Desktop/phaster_run_{}.xlsx".format(query_excel), engine='xlsxwriter')
-        final_df.to_excel(writer, sheet_name = "Successful Accession Runs", index=False)
+    final_df = pd.DataFrame(multipleAccessions)
 
-        # add styling for the links
-        workbook = writer.book
-        # Get Sheet1
-        worksheet = writer.sheets['Successful Accession Runs']
+    # send output (and errors, if any) to file
+    query_excel = datetime.utcnow() #query.replace(" ", "_").replace("-", "")
+    print("/Users/alicecastillo/Desktop/phaster_run_{}.xlsx".format(query_excel))
+    user_profile = os.environ.get('USERPROFILE')
+    excel_path = "{}/Desktop/phaster_run_{}.xlsx".format(user_profile, query_excel)
+    writer = pd.ExcelWriter(path="/Users/alicecastillo/Desktop/phaster_run_{}.xlsx".format(query_excel), engine='xlsxwriter')
+    
+    # add styling for the links
+    workbook = writer.book
 
-        cell_format = workbook.add_format()
-        cell_format.set_underline()
-        cell_format.set_font_color('blue')
+    final_df.to_excel(writer, sheet_name = "All Accessions Success", index=False)
+    # add link styling
+    worksheet = writer.sheets["All Accessions Success"]
+    cell_format = workbook.add_format()
+    cell_format.set_underline()
+    cell_format.set_font_color('blue')
+    worksheet.set_column('O:P', None, cell_format)
 
-        worksheet.set_column('O:P', None, cell_format)
-        if error_list:
-            error_df = pd.DataFrame(error_list)
-            error_df.to_excel(writer, sheet_name="Errors", index=False)
-            print("Accessions not reached: {}".format(badAccessions))
-        writer.save()
-        f.close()
-        try:
-            os.remove(valid_entrez)
-        except Exception as e:
-            print("Error while trying to delete entrez output: {}".format(e))
-        return excel_path, error_list, ""
-    return "", "", "Entrez output could not be found"
+    if multipleErrorLists:
+        error_df = pd.DataFrame(multipleErrorLists)
+        error_df.to_excel(writer, sheet_name="Errors", index=False)
+        print("Accessions not reached: {}".format(badAccessions))
+    writer.save()
+    f.close()
+    try:
+        os.remove(valid_entrez)
+    except Exception as e:
+        print("Error while trying to delete entrez output: {}".format(e))
+    return excel_path, error_list, ""
         
 
 #### VIEWS ############################################################################################################

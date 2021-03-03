@@ -1,0 +1,2 @@
+NZ_CP022526.1	chromosome	Pseudomonas aeruginosa strain Ocean-1155 chromosome, complete genome
+CP022526.1	chromosome	Pseudomonas aeruginosa strain Ocean-1155 chromosome, complete genome
